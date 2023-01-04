@@ -48,7 +48,25 @@ print("以下為 w10 缺考名單:")
 for stud in cp_abs:
     print(stud)</pre>
 <p></p><h2>w12</h2>
-<h2>w13</h2>
+<p><span>輸入攝氏的溫度值</span></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"># Brython 的 input() 可以接受輸入提示字串, 跳出瀏覽器輸入表單後, 將輸入內容以字串取回
+user_input_temp = input("請輸入攝氏溫度值:")
+# 接著列出 user_input_temp 變數的資料型別
+print(type(user_input_temp))</pre>
+<p><span>回傳出攝氏和華氏的溫度值</span></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"># Brython 的 input() 可以接受輸入提示字串, 跳出瀏覽器輸入表單後, 將輸入內容以字串取回
+user_input_temp = input("請輸入攝氏溫度值:")
+# 接著列出 user_input_temp 變數的資料型別
+print(type(user_input_temp))
+# 到這裡已知利用 input() 函式將傳回字串, 接著以 float() 將字串轉為浮點數
+user_input_temp = float(user_input_temp)
+# 因為攝氏溫度乘上 9/5 之後再加上 32 就可以得到對應的華氏溫度值
+Fahrenheit = (user_input_temp*9/5) + 32
+# 到這裡, Fahrenheit 資料型別為浮點數, 而 user_input_temp 在第 8 行也轉為浮點數
+# 要將兩個浮點數與字串相加, 都必須透過 str() 轉為字串
+print("攝氏 " + str(user_input_temp) + " 度, 等於華氏 " + str(Fahrenheit) + " 度.")
+</pre>
+<p></p><h2>w13</h2>
 <h2>w14</h2>
 <p><a href="https://mdecp2022.github.io/site-41123212/content/Brython.html">w14缺考及成績名單</a></p>
 <p>--修改w11的程式--</p>
