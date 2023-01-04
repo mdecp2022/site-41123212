@@ -1,6 +1,70 @@
 <h1>HW</h1>
 <h2>w10</h2>
-<h2>w11</h2>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"># 導入 ast 模組是希望利用其 literal_eval() 將 dict 格式的字串轉為 dict 資料型別
+# 以利隨後的取值運算
+import ast
+# 定義一個函式, 以班級代號字串作為輸入, 可以傳回各班修課學員的學號數列
+def get_stud(c_name):
+    # 將課程的班級代號字串作為 dict 的 key, 而 2022 fall 的課程代號作為對應值
+    # 使用者可以利用班級代號從 courses dict 取出課程代號
+    courses = {"1a": "0747", "1b": "0761", "2a": "0773", "2b": "0786"}
+    # 利用 c_name 從 courses 得到該學期的課程代號
+    c = courses[c_name]
+    # 利用課程代號從學校教務主機取的該班修課人員名單
+    url = "https://nfu.cycu.org/?semester=1111&amp;courseno=" + c + "&amp;column=True"
+    # 讀出各修課人員資料後, 以跳行符號切割, 得到的 data 為數列
+    data = open(url).read().split("\n")
+    # 因為最後一筆資料為空字串, 因此利用數列運算將其去除
+    stud = data[:-1]
+    # get_stud() 函式最後將對應班級的修課人員學號以數列格式傳回
+    return stud
+# 利用 "1b" 作為輸入從 get_stud() 取出該班修課學員學號數列
+cp_stud = get_stud("1b")
+# get w10 quiz result
+# # 以下為 1b w10 quiz 考試結果的 JSON 檔案
+cp_w10_quiz_url = "https://gist.githubusercontent.com/mdecycu/9df4b372ac1b7386cf259ced15f1a2b2/raw/a6825f13b1bb0b61e09e74dd117729eefe1d947f/20221110_cp1b_w10_quiz.json"
+def get_score(url):
+    # 利用 open() 與 read() 讀取考試結果 JSON 檔案
+    json_data = open(url).read()
+    # 利用 ast.literal_eval() 將字串 dict, 轉為程式可用的 dict 資料型別
+    big_dict = ast.literal_eval(json_data)
+    # 從 big_dict 中, 取出 body 中的 testuser 欄位資料
+    data = big_dict["body"]["testuser"]
+    # 定義一個空 dict 資料變數, 隨後利用迴圈逐一將學號作為 key, 考試成績為 valude
+    # 組成 quiz_dict 的資料內容, 以便之後可以用學號當作輸入, 取得該員考試成績
+    quiz_dict = {}
+    for i in data:
+        # data 資料中的 user_name 為考試學員的帳號, 也就是學號
+        stud_id = data[i]["user_name"]
+        # data 資料中的 total_score 欄位為考試成績
+        # 因為考試成績為字串, 先轉為浮點數後, 再轉為整數
+        stud_score = int(float(data[i]["total_score"]))
+        # 逐一以學號為 key, 考試成績為對應 value, 將資料放入 quiz_dict
+        quiz_dict[stud_id] = stud_score
+    # 取得各學員的考試成績 quiz_dict 後, 將資料傳回
+    return quiz_dict
+# 從考試 JSON 檔案中取得考試結果的字典資料
+cp_quiz = get_score(cp_w10_quiz_url)
+# 設定一個空數列, 隨後將利用 append() 方法, 將缺考學員學號存入
+cp_abs = []
+# 從修課學員數列中, 逐一按照學號次序, 以重複迴圈將學號對應至 stud 變數
+for stud in cp_stud:
+    # 因為缺考學員在考試結果的 dict 中並無資料, 因此利用 try except 進行判斷
+    try:
+        # 針對 stud 學號, 有考試成績者, 列出其學號與得分
+        print(stud, cp_quiz[stud])
+    except:
+        # 缺考者沒有 quiz 成績, 則在其成績欄位印出"缺"
+        print(stud, "缺")
+        # 同時將缺考學員學號以 append() 方法逐一置入
+        cp_abs.append(stud)
+# 列出缺考名單
+print("="*20)
+print("以下為 w10 缺考名單:")
+# 因為 cp_abs 資料為 list, 在此利用 for 迴圈逐一列出
+for stud in cp_abs:
+    print(stud)</pre>
+<p></p><h2>w11</h2>
 <pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">import ast
 # get stud_list first
 def get_stud(c_name):
